@@ -1,0 +1,183 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Virtual Mouse</title>
+    <script>
+        function startVM() {
+            fetch('/start')
+                .then(r => r.json())
+                .then(data => alert(data.status));
+        }
+
+        function stopVM() {
+            fetch('/stop')
+                .then(r => r.json())
+                .then(data => alert(data.status));
+        }
+    </script>
+</head>
+<body>
+    <h1>🖱 Virtual Mouse Controller</h1>
+    <button onclick="startVM()">Start Virtual Mouse</button>
+    <button onclick="stopVM()">Stop Virtual Mouse</button>
+    
+</body>
+</html> -->
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Virtual Mouse</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); /* Focus ring */
+        }
+
+        button.start-button {
+            background-color: #28a745; /* Green */
+            color: white;
+        }
+
+        button.start-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button.stop-button {
+            background-color: #dc3545; /* Red */
+            color: white;
+        }
+
+        button.stop-button:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        #statusMessage {
+            margin-top: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            background-color: #e9ecef;
+            color: #495057;
+            font-size: 1em;
+            font-weight: normal;
+            min-width: 250px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: none; /* Hidden by default */
+        }
+
+        #statusMessage.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        #statusMessage.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+    <script>
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = ''; // Reset classes
+            statusDiv.classList.add(type);
+            statusDiv.style.display = 'block';
+
+            // Hide after 5 seconds
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function startVM() {
+            fetch('/start')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status.includes("started")) {
+                        showStatus(data.status, 'success');
+                    } else {
+                        showStatus(data.status, 'error');
+                    }
+                })
+                .catch(error => {
+                    showStatus("Failed to connect to the server: " + error.message, 'error');
+                });
+        }
+
+        function stopVM() {
+            fetch('/stop')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.status.includes("stopped")) {
+                        showStatus(data.status, 'success');
+                    } else {
+                        showStatus(data.status, 'error');
+                    }
+                })
+                .catch(error => {
+                    showStatus("Failed to connect to the server: " + error.message, 'error');
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>🖱 Virtual Mouse Controller</h1>
+    <div class="button-container">
+        <button onclick="startVM()" class="start-button">Start Virtual Mouse</button>
+        <button onclick="stopVM()" class="stop-button">Stop Virtual Mouse</button>
+    </div>
+    <div id="statusMessage"></div>
+</body>
+</html>
